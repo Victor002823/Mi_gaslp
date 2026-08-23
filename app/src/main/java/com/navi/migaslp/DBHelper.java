@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cargasGas.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6; // Subimos la versión a 6 para recrear la tabla
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,13 +34,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void insertarDatosIniciales(SQLiteDatabase db) {
+        // Insertamos del más antiguo al más reciente para que el ID más alto siempre sea el más nuevo
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/03/2026', 27.0, 300.0, '300')");
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/04/2026', 28.0, 300.0, '300')");
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('22/05/2026', 28.0, 300.0, '300')");
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('28/06/2026', 18.0, 200.0, '200')");
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('29/06/2026', 18.0, 200.0, '200')");
+        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('02/08/2026', 18.0, 200.0, '200')");
         db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('22/08/2026', 29.0, 300.0, '300')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('02/08/2026', 18.0, 200.0, '$200')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('29/06/2026', 18.0, 200.0, '$200')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('28/06/2026', 18.0, 200.0, '$200')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('22/05/2026', 28.0, 300.0, '$300')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/04/2026', 28.0, 300.0, '$300')");
-        db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/03/2026', 27.0, 300.0, '$300')");
     }
 
     public long agregarCarga(Carga carga) {
@@ -55,15 +56,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor obtenerTodasLasCargas() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
-        // Si la tabla está vacía por alguna razón, insertamos los datos iniciales al vuelo
-        if (cursor == null || cursor.getCount() == 0) {
-            if (cursor != null) cursor.close();
-            SQLiteDatabase writableDb = this.getWritableDatabase();
-            insertarDatosIniciales(writableDb);
-            cursor = writableDb.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
-        }
-        return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC ORDER BY id DESC", null);
+        // Una sola instrucción correcta de orden descendente
+        return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
     }
 
     public int actualizarCarga(Carga carga) {
