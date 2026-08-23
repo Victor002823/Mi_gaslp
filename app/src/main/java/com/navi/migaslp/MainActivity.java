@@ -67,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		
 		// Recreamos el adaptador con la lista ordenada que viene del DBHelper
-		java.util.Collections.reverse(lista);
-                adapter = new CargaAdapter(this, lista);
+		adapter = new CargaAdapter(this, lista);
 		recyclerCargas.setAdapter(adapter);
 	}
 }

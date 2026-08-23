@@ -55,15 +55,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor obtenerTodasLasCargas() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM cargas", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
         // Si la tabla está vacía por alguna razón, insertamos los datos iniciales al vuelo
         if (cursor == null || cursor.getCount() == 0) {
             if (cursor != null) cursor.close();
             SQLiteDatabase writableDb = this.getWritableDatabase();
             insertarDatosIniciales(writableDb);
-            cursor = writableDb.rawQuery("SELECT * FROM cargas", null);
+            cursor = writableDb.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
         }
-        return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
+        return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC ORDER BY id DESC", null);
     }
 
     public int actualizarCarga(Carga carga) {
