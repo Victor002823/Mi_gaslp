@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cargasGas.db";
-    private static final int DATABASE_VERSION = 6; // Subimos la versión a 6 para recrear la tabla
+    private static final int DATABASE_VERSION = 7;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void insertarDatosIniciales(SQLiteDatabase db) {
-        // Insertamos del más antiguo al más reciente para que el ID más alto siempre sea el más nuevo
         db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/03/2026', 27.0, 300.0, '300')");
         db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('07/04/2026', 28.0, 300.0, '300')");
         db.execSQL("INSERT INTO cargas (fecha, cantidad, costo, notas) VALUES ('22/05/2026', 28.0, 300.0, '300')");
@@ -56,7 +55,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor obtenerTodasLasCargas() {
         SQLiteDatabase db = this.getReadableDatabase();
-        // Una sola instrucción correcta de orden descendente
         return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
     }
 
