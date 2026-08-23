@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cargasGas.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,8 +24,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "costo REAL," +
                 "notas TEXT)";
         db.execSQL(CREATE_TABLE);
-        
-        // Insertar los registros iniciales de la imagen
         insertarDatosIniciales(db);
     }
 
@@ -57,6 +55,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor obtenerTodasLasCargas() {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM cargas", null);
+        // Si la tabla está vacía por alguna razón, insertamos los datos iniciales al vuelo
+        if (cursor == null || cursor.getCount() == 0) {
+            if (cursor != null) cursor.close();
+            SQLiteDatabase writableDb = this.getWritableDatabase();
+            insertarDatosIniciales(writableDb);
+            cursor = writableDb.rawQuery("SELECT * FROM cargas", null);
+        }
         return db.rawQuery("SELECT * FROM cargas ORDER BY id DESC", null);
     }
 
