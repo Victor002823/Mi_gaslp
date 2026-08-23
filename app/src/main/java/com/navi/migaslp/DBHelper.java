@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "cargasGas.db";
-    private static final int DATABASE_VERSION = 7;
+    // Cambiamos el nombre para forzar a Android a crear una BD 100% nueva y limpia
+    private static final String DATABASE_NAME = "cargasGasV2.db";
+    private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
