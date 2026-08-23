@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     carga.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
                     carga.setFecha(cursor.getString(cursor.getColumnIndexOrThrow("fecha")));
                     carga.setCantidad(cursor.getDouble(cursor.getColumnIndexOrThrow("cantidad")));
+                    carga.setCosto(cursor.getDouble(cursor.getColumnIndexOrThrow("costo")));
                     carga.setNotas(cursor.getString(cursor.getColumnIndexOrThrow("notas")));
                     lista.add(carga);
                 } while (cursor.moveToNext());
