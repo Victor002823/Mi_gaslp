@@ -25,7 +25,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:src="@android:drawable/ic_menu_gallery"
+                android:src="@drawable/propane_tank_24"
                 app:tint="@color/purple_dark" />
         </FrameLayout>
 
